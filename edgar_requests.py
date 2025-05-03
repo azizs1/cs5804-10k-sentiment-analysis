@@ -1,75 +1,77 @@
 import requests
 import json
-import ast
 import time
+import string
+import os
 from bs4 import BeautifulSoup
 
-# what we want to do is use the txt file here https://www.sec.gov/about/webmaster-frequently-asked-questions#developers
-# use stock api to download tickers for top 50 companies and use txt file to map to cik
-# loop through and download the submissions json for each of these companies
-# make sure u add a sleep for 5 seconds after each request to avoid being rate-limited.
-# we only need to do all this once and then save it in a folder in the repo
+# Header to use when sending requests to EDGAR
+headers = {
+    "User-Agent": "10KSentimentAnalysisProject/1.0 (azizs@vt.edu)"
+}
 
-# THIS CODE IS USED TO DOWNLOAD SUBMISSION DETAILS FOR MICROSOFT
-# SEE ms_info.txt for what this looks like
-# url = "https://data.sec.gov/submissions/CIK0000789019.json"
+# Fortune 35 tickers
+tickers = ["wmt", "amzn", "aapl", "unh", "brka", "cvs", "xom",
+           "googl", "mck", "cor", "cost", "jpm", "msft", "cah",
+           "cvx", "ci", "f", "bac", "gm", "elv", "c", "cnc",
+           "hd", "mpc", "kr", "psx", "fnma", "wba", "vlo", "meta",
+           "vz", "t", "cmcsa", "wfc", "gs"]
 
-# headers = {
-#     "User-Agent": "10KSentimentAnalysisProject/1.0 (azizs@vt.edu)"
-# }
+# Use the SEC provided json to get CIKs
+with open('misc/company_tickers.json', 'r') as file:
+    company_tickers = json.load(file)
 
-# response = requests.get(url, headers=headers)
+# Store left-padded CIKs for each of our tickers as well as names
+companies = {}
+for company in company_tickers.values():
+    if company['ticker'].lower() in tickers:
+        companies[company['ticker'].lower()] = {}
+        companies[company['ticker'].lower()]['cik'] = str(company['cik_str']).zfill(10)
+        companies[company['ticker'].lower()]['name'] = company['title'].translate(str.maketrans('', '', string.punctuation)).lower().replace(' ','_')
 
-# # Print the JSON data
-# print(response.json())
+# Make requests to get all submissions for each company
+for ticker, company in companies.items():
+    url = f"https://data.sec.gov/submissions/CIK{company['cik']}.json"
+    print(url)
+    response = requests.get(url, headers=headers)
+    
+    submissions_dict = response.json()
+    dir_path = f"10k_reports/{company['name']}/"
 
+    # Create directory path for this company if it does not exist
+    if not os.path.exists(dir_path):
+        os.makedirs(dir_path)
+    
+    # Likely won't have to use this file, but saving it just in case
+    with open(dir_path+"submissions.json", 'w') as file:
+        json.dump(submissions_dict, file, indent=4)
 
-# Read and parse the data
-with open("ms_info.txt", 'r') as file:
-    dict_data = ast.literal_eval(file.read())  # Safely evaluate the dictionary
+    for idx, form in enumerate(submissions_dict['filings']['recent']['form']):
+        if form == "10-K":
+            accession_number = submissions_dict['filings']['recent']['accessionNumber'][idx]
+            filename = submissions_dict['filings']['recent']['primaryDocument'][idx]
 
-# Access specific fields
-cik = dict_data['cik']
-name = dict_data['name']
-sic_description = dict_data['sicDescription']
+            url = f"https://www.sec.gov/Archives/edgar/data/{company['cik']}/{accession_number.replace("-", "")}/{filename}"
+            response = requests.get(url, headers=headers)
+            time.sleep(0.5)
 
-print(f"CIK: {cik}")
-print(f"Name: {name}")
-print(f"SIC Description: {sic_description}")
-print(dict_data['filings']['recent'].keys())
-# print(dict_data['filings']['recent']['primaryDocument'])
-for idx, form in enumerate(dict_data['filings']['recent']['form']):
-    if form == "10-K":
-        accession_number = dict_data['filings']['recent']['accessionNumber'][idx]
-        filename = dict_data['filings']['recent']['primaryDocument'][idx]
-        print('--------')
-        print(f"Accession Number: {accession_number}")
-        print(f"Report Date: {dict_data['filings']['recent']['reportDate'][idx]}")
-        print(f"Form Type: {dict_data['filings']['recent']['form'][idx]}")
-        print(f"File Name: {filename}")
+            date = submissions_dict['filings']['recent']['reportDate'][idx].replace('-','_')
+            file_10k = ticker+'_'+date
+            print(file_10k)
 
-        # commented out since it makes requests
-        # url = f"https://www.sec.gov/Archives/edgar/data/{cik}/{accession_number.replace("-", "")}/{filename}"
+            # Save the htm file locally
+            with open(dir_path+file_10k+'.htm', "wb") as file:
+                file.write(response.content)
+            time.sleep(0.5)
 
-        # headers = {
-        #     "User-Agent": "10KSentimentAnalysisProject/1.0 (azizs@vt.edu)"
-        # }
+            with open(dir_path+file_10k+'.htm', "r", encoding="utf-8") as file:
+                html_content = file.read()
 
-        # response = requests.get(url, headers=headers)
+            soup = BeautifulSoup(html_content, "html.parser")
 
-        # # Save the file locally
-        # with open(filename, "wb") as file:
-        #     file.write(response.content)
-        # time.sleep(5)
+            # Extract plain text
+            plain_text = soup.get_text()
 
-        with open(filename, "r", encoding="utf-8") as file:
-            html_content = file.read()
-
-        soup = BeautifulSoup(html_content, "html.parser")
-
-        # Extract plain text
-        plain_text = soup.get_text()
-
-        # Save the plain text to a new file
-        with open(filename.replace("htm", "txt"), "w", encoding="utf-8") as file:
-            file.write(plain_text)
+            # Save the plain text to a new file
+            with open(dir_path+file_10k+'.txt', "w", encoding="utf-8") as file:
+                file.write(plain_text)

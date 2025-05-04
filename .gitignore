@@ -11,3 +11,6 @@ wheels/
 
 # Generated Files
 /10k_reports
+
+# Ignore API key resource
+/resources/polygon_api_key.txt

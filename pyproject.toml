@@ -9,3 +9,9 @@ dependencies = [
     "bs4>=0.0.2",
     "requests>=2.32.3",
 ]
+
+[dependency-groups]
+dev = [
+    "pandas>=2.2.3",
+    "polygon-api-client>=1.14.5",
+]

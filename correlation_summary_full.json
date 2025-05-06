@@ -1,0 +1,181 @@
+{
+    "overall_correlation": -0.048853682630513304,
+    "per_company_sorted": [
+        {
+            "ticker": "FNMA",
+            "correlation": 1.0
+        },
+        {
+            "ticker": "HUM",
+            "correlation": 0.5593835149662978
+        },
+        {
+            "ticker": "WBA",
+            "correlation": 0.48207668137692145
+        },
+        {
+            "ticker": "MSFT",
+            "correlation": 0.4480532740773412
+        },
+        {
+            "ticker": "PG",
+            "correlation": 0.44522444010141554
+        },
+        {
+            "ticker": "CMCSA",
+            "correlation": 0.441806148111323
+        },
+        {
+            "ticker": "ADM",
+            "correlation": 0.41261682256783605
+        },
+        {
+            "ticker": "UPS",
+            "correlation": 0.3756949976151346
+        },
+        {
+            "ticker": "F",
+            "correlation": 0.35734099128050195
+        },
+        {
+            "ticker": "AMZN",
+            "correlation": 0.2932467615197689
+        },
+        {
+            "ticker": "ELV",
+            "correlation": 0.27967536119155784
+        },
+        {
+            "ticker": "PEP",
+            "correlation": 0.2626818917723591
+        },
+        {
+            "ticker": "JNJ",
+            "correlation": 0.2042320670091659
+        },
+        {
+            "ticker": "LOW",
+            "correlation": 0.16289972660201396
+        },
+        {
+            "ticker": "GM",
+            "correlation": 0.11724484825404087
+        },
+        {
+            "ticker": "AAPL",
+            "correlation": 0.09851248154615015
+        },
+        {
+            "ticker": "KR",
+            "correlation": 0.09663968528647567
+        },
+        {
+            "ticker": "T",
+            "correlation": 0.0787296253354631
+        },
+        {
+            "ticker": "HD",
+            "correlation": 0.040126445747091594
+        },
+        {
+            "ticker": "CVS",
+            "correlation": 0.003732459511259654
+        },
+        {
+            "ticker": "CNC",
+            "correlation": -0.027003314408152467
+        },
+        {
+            "ticker": "ET",
+            "correlation": -0.054155181293900956
+        },
+        {
+            "ticker": "FDX",
+            "correlation": -0.06420647964497536
+        },
+        {
+            "ticker": "XOM",
+            "correlation": -0.09920189312557466
+        },
+        {
+            "ticker": "MPC",
+            "correlation": -0.11721323223750049
+        },
+        {
+            "ticker": "CVX",
+            "correlation": -0.1644424026965919
+        },
+        {
+            "ticker": "TSLA",
+            "correlation": -0.18087199727829054
+        },
+        {
+            "ticker": "DIS",
+            "correlation": -0.19021616167618266
+        },
+        {
+            "ticker": "PSX",
+            "correlation": -0.2472434326587454
+        },
+        {
+            "ticker": "COST",
+            "correlation": -0.24756120746139856
+        },
+        {
+            "ticker": "GOOGL",
+            "correlation": -0.27699274412940306
+        },
+        {
+            "ticker": "TGT",
+            "correlation": -0.35702307320573956
+        },
+        {
+            "ticker": "CAH",
+            "correlation": -0.38239733559483524
+        },
+        {
+            "ticker": "FMCC",
+            "correlation": -0.4258029991287265
+        },
+        {
+            "ticker": "WMT",
+            "correlation": -0.4321157121101621
+        },
+        {
+            "ticker": "VLO",
+            "correlation": -0.44024896117975615
+        },
+        {
+            "ticker": "CI",
+            "correlation": -0.48549665045328527
+        },
+        {
+            "ticker": "MCK",
+            "correlation": -0.6682778920706366
+        },
+        {
+            "ticker": "VZ",
+            "correlation": -0.7155745492271168
+        },
+        {
+            "ticker": "DELL",
+            "correlation": -0.7648347655968329
+        },
+        {
+            "ticker": "UNH",
+            "correlation": -0.7957290257334004
+        },
+        {
+            "ticker": "COR",
+            "correlation": -0.8142929937202595
+        },
+        {
+            "ticker": "WFC",
+            "correlation": -0.823752657762966
+        },
+        {
+            "ticker": "META",
+            "correlation": -1.0
+        }
+    ]
+}
